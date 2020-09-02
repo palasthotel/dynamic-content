@@ -9,43 +9,37 @@
 namespace DynamicContent;
 
 
-class Render {
-	
-	/**
-	 * Page constructor.
-	 *
-	 * @param Plugin $plugin
-	 */
-	function __construct($plugin) {
-		$this->plugin = $plugin;
-		
+class Render extends _Component {
+
+	public function onCreate() {
+
 		// TODO: render tigger point
 		// TODO: templateable trigger point
 		add_action(Plugin::ACTION_RENDER_TRIGGER, array($this, "render_trigger"));
 	}
-	
+
 	/**
 	 * @param array|string $slug
 	 */
 	function render_trigger($slug){
-		
+
 		if(is_array($slug)){
 			foreach ($slug as $s){
 				$this->render_trigger($s);
 			}
 			return;
 		}
-		
+
 		$post = $this->plugin->get_content_by_slug($slug);
 		if($post == null){
 			include $this->plugin->dir."/templates/not-found.tpl.php";
 			return;
 		}
-		
+
 		include $this->get_template_path_by_slug($slug);
-		
+
 	}
-	
+
 	/**
 	 * @param $slug
 	 *
@@ -60,7 +54,7 @@ class Render {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * list of template names sorted by priority
 	 * @param $slug
@@ -73,7 +67,7 @@ class Render {
 			Plugin::TEMPLATE_TRIGGER,
 		);
 	}
-	
+
 	/**
 	 * look for existing template path
 	 * @return string|false
@@ -84,7 +78,7 @@ class Render {
 		}
 		$fallback = $this->plugin->dir . 'templates/' . $template;
 		return (is_file($fallback))? $fallback: false;
-		
+
 	}
-	
+
 }

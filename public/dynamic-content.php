@@ -18,6 +18,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
+/**
+ * @property string dir
+ * @property string url
+ */
 class Plugin {
 
 	const DOMAIN = "dynamic-content";
@@ -33,7 +37,7 @@ class Plugin {
 	const FILTER_JS_SETTINGS = "dynamic_content_js_settings";
 
 	const ACTION_RENDER_TRIGGER = "dynamic_pages_render_trigger";
-	const ACTION_ENQUEUE_SCIRPTS = "dynamic_pages_enqueue_scripts";
+	const ACTION_ENQUEUE_SCRIPTS = "dynamic_pages_enqueue_scripts";
 
 	const HANDLE_JS_API = "dynamic-content-api";
 	const HANDLE_JS_TRIGGERS = "dynamic-content-triggers";
@@ -54,33 +58,19 @@ class Plugin {
 		$this->dir = plugin_dir_path( __FILE__ );
 		$this->url = plugin_dir_url( __FILE__ );
 
+		require_once dirname( __FILE__ ) . "/vendor/autoload.php";
+
 		/**
 		 * reset contents cache
 		 */
 		$this->reset_contents_cache();
 
 		/**
-		 * post type
+		 * initialize components
 		 */
-		require_once dirname( __FILE__ ) . "/inc/content-type.php";
-		$this->content_type = new \ContentType( $this );
-
-		/**
-		 * content generator
-		 */
-		require_once dirname( __FILE__ ) . "/inc/content-generator.php";
+		$this->content_type = new ContentType( $this );
 		$this->content_generator = new ContentGenerator( $this );
-
-		/**
-		 * JS api
-		 */
-		require_once dirname( __FILE__ ) . "/inc/js.php";
-		$this->js = new JS( $this );
-
-		/**
-		 * render
-		 */
-		require_once dirname( __FILE__ ) . "/inc/render.php";
+		$this->assets = new Assets( $this );
 		$this->render = new Render( $this );
 
 		/**

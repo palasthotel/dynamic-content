@@ -9,19 +9,13 @@
 namespace DynamicContent;
 
 
-class JS {
-	
-	/**
-	 * Page constructor.
-	 *
-	 * @param Plugin $plugin
-	 */
-	function __construct( $plugin ) {
-		$this->plugin = $plugin;
-		
+class Assets extends _Component {
+
+
+	public function onCreate() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_api_scripts' ) );
 	}
-	
+
 	/**
 	 * only the core scripts for api usage
 	 */
@@ -33,7 +27,7 @@ class JS {
 			filemtime( $this->plugin->dir. '/js/api.js' ),
 			TRUE
 		);
-		
+
 		$settings = array(
 			'breakpoint'   => 767,
 			'placeholders' => array(
@@ -50,7 +44,7 @@ class JS {
 				'ajax_part' => 'dynamic-content__ajax-part',
 			),
 		);
-		
+
 		$settings             = apply_filters( Plugin::FILTER_JS_SETTINGS, $settings );
 		$settings['contents'] = array();
 		foreach ( $this->plugin->get_contents() as $post ) {
@@ -64,7 +58,7 @@ class JS {
 			);
 		}
 		wp_localize_script( Plugin::HANDLE_JS_API, 'DynamicContent_API', $settings );
-		
+
 		/**
 		 * modify default scripts?
 		 */
@@ -79,11 +73,11 @@ class JS {
 		foreach ( $scripts as $script ) {
 			wp_enqueue_script( $script['handle'], $script['path'], $script['dependencies'], $script['version'], TRUE );
 		}
-		
+
 		/**
 		 * add own scripts
 		 */
-		do_action( Plugin::ACTION_ENQUEUE_SCIRPTS, Plugin::HANDLE_JS_API );
+		do_action( Plugin::ACTION_ENQUEUE_SCRIPTS, Plugin::HANDLE_JS_API );
 	}
-	
+
 }

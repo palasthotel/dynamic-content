@@ -1,23 +1,24 @@
 <?php
 
-class ContentType {
-	
-	
-	public function __construct($plugin) {
+namespace DynamicContent;
+
+class ContentType extends _Component {
+
+	public function onCreate() {
 		add_action( 'init', array( $this, 'register' ) );
 	}
-	
+
 	function get_type(){
 		return 'dynamic_content';
 	}
-	
+
 	function get_slug(){
 		return 'd';
 	}
-	
+
 	// Register Custom Post Type
 	function register() {
-		
+
 		$rewrite = array(
 			'slug'                  => $this->get_slug(),
 			'with_front'            => true,
@@ -45,9 +46,9 @@ class ContentType {
 //			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		);
 		register_post_type( $this->get_type(), $args );
-		
+
 	}
-	
-	
-	
+
+
+
 }
