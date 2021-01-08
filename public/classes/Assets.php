@@ -9,22 +9,28 @@
 namespace DynamicContent;
 
 
+use WP_Post;
+
 class Assets extends _Component {
 
 
 	public function onCreate() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_api_scripts' ) );
+		add_action( 'init', array( $this, 'init' ) );
 	}
 
 	/**
-	 * only the core scripts for api usage
+	 * register scripts
 	 */
-	function enqueue_api_scripts() {
-		wp_enqueue_script(
+	function init() {
+
+		// ---------------------------------------------
+		// api scripts
+		// ---------------------------------------------
+		wp_register_script(
 			Plugin::HANDLE_JS_API,
-			$this->plugin->url . 'js/api.js',
+			$this->plugin->url . '/dist/api.js',
 			array( 'jquery', 'underscore' ),
-			filemtime( $this->plugin->dir. '/js/api.js' ),
+			filemtime( $this->plugin->path . '/dist/api.js' ),
 			TRUE
 		);
 
@@ -49,7 +55,7 @@ class Assets extends _Component {
 		$settings['contents'] = array();
 		foreach ( $this->plugin->get_contents() as $post ) {
 			/**
-			 * @var \WP_Post $post
+			 * @var WP_Post $post
 			 */
 			$settings['contents'][] = array(
 				"post_title" => get_the_title( $post->ID ),
@@ -59,25 +65,16 @@ class Assets extends _Component {
 		}
 		wp_localize_script( Plugin::HANDLE_JS_API, 'DynamicContent_API', $settings );
 
-		/**
-		 * modify default scripts?
-		 */
-		$scripts   = array();
-		$scripts[] = array(
-			'path'         => $this->plugin->url . 'js/triggers.js',
-			'handle'       => Plugin::HANDLE_JS_TRIGGERS,
-			'dependencies' => array( Plugin::HANDLE_JS_API ),
-			'version'      => filemtime( $this->plugin->dir. '/js/triggers.js' ),
+		// ---------------------------------------------
+		// triggers script
+		// ---------------------------------------------
+		wp_register_script(
+			Plugin::HANDLE_JS_TRIGGERS,
+			$this->plugin->url . '/dist/triggers.js',
+			[Plugin::HANDLE_JS_API],
+			filemtime( $this->plugin->path . '/dist/triggers.js' ),
+			true
 		);
-		$scripts   = apply_filters( Plugin::FILTER_ENQUEUE_SCRIPTS, $scripts );
-		foreach ( $scripts as $script ) {
-			wp_enqueue_script( $script['handle'], $script['path'], $script['dependencies'], $script['version'], TRUE );
-		}
-
-		/**
-		 * add own scripts
-		 */
-		do_action( Plugin::ACTION_ENQUEUE_SCRIPTS, Plugin::HANDLE_JS_API );
 	}
 
 }

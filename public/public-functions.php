@@ -1,7 +1,9 @@
 <?php
 
+use DynamicContent\Plugin;
+
 /**
- * @return \DynamicContent\Plugin
+ * @return Plugin
  */
 function dynamic_content_get_plugin() {
 	global $dynamic_content_plugin;
@@ -15,7 +17,7 @@ function dynamic_content_get_plugin() {
  * @param $slug
  */
 function dynamic_content_render_trigger( $slug ) {
-	do_action( \DynamicContent\Plugin::ACTION_RENDER_TRIGGER, $slug );
+	do_action( Plugin::ACTION_RENDER_TRIGGER, $slug );
 }
 
 /**
@@ -23,7 +25,7 @@ function dynamic_content_render_trigger( $slug ) {
  *
  * @param $slug
  *
- * @return null|\WP_Post
+ * @return null|WP_Post
  */
 function dynamic_content_get_page( $slug ) {
 	return dynamic_content_get_plugin()->get_content_by_slug( $slug );

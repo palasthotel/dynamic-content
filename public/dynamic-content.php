@@ -19,8 +19,12 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 /**
- * @property string dir
- * @property string url
+ * @property string $path
+ * @property string $url
+ * @property ContentType content_type
+ * @property ContentGenerator content_generator
+ * @property Assets assets
+ * @property Render render
  */
 class Plugin {
 
@@ -33,11 +37,9 @@ class Plugin {
 	const TEMPLATE_TRIGGER_SLUG_PLACEHOLDER = "%slug%";
 
 	const FILTER_PAGES_CONFIG = "dynamic_pages_config";
-	const FILTER_ENQUEUE_SCRIPTS = "dynamic_content_enqueue_scripts";
 	const FILTER_JS_SETTINGS = "dynamic_content_js_settings";
 
 	const ACTION_RENDER_TRIGGER = "dynamic_pages_render_trigger";
-	const ACTION_ENQUEUE_SCRIPTS = "dynamic_pages_enqueue_scripts";
 
 	const HANDLE_JS_API = "dynamic-content-api";
 	const HANDLE_JS_TRIGGERS = "dynamic-content-triggers";
@@ -55,8 +57,8 @@ class Plugin {
 		/**
 		 * base paths
 		 */
-		$this->dir = plugin_dir_path( __FILE__ );
-		$this->url = plugin_dir_url( __FILE__ );
+		$this->path = plugin_dir_path( __FILE__ );
+		$this->url  = plugin_dir_url( __FILE__ );
 
 		require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 

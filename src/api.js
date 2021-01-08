@@ -50,7 +50,7 @@
 		return null;
 	};
 	API.get_content = get_content;
-	
+
 	/**
 	 * load content
 	 *
@@ -60,7 +60,7 @@
 	 * @return xhjr request object
 	 */
 	API.load = function(options){
-		
+
 		var _options = _.extend({
 			method: 'GET',
 			xhrFields: {
@@ -83,8 +83,8 @@
 			timeout: _options.timeout,
 		});
 	};
-	
-	
+
+
 	/**
 	 * load content part
 	 *
@@ -95,7 +95,7 @@
 	 */
 	function load_part(options){
 		if(typeof options.success !== "function"){
-			throw "no success function definded";
+			throw "no success function defined";
 		}
 		return API.load(options).then(function(data){
 			options.success($(data).find("#"+content_id).html());

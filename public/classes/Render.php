@@ -32,7 +32,7 @@ class Render extends _Component {
 
 		$post = $this->plugin->get_content_by_slug($slug);
 		if($post == null){
-			include $this->plugin->dir."/templates/not-found.tpl.php";
+			include $this->plugin->path . "/templates/not-found.tpl.php";
 			return;
 		}
 
@@ -76,7 +76,7 @@ class Render extends _Component {
 		if ( $overridden_template = locate_template( Plugin::THEME_FOLDER . "/" . $template ) ) {
 			return $overridden_template;
 		}
-		$fallback = $this->plugin->dir . 'templates/' . $template;
+		$fallback = $this->plugin->path . 'templates/' . $template;
 		return (is_file($fallback))? $fallback: false;
 
 	}
