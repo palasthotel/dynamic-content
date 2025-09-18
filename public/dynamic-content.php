@@ -17,15 +17,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-
-/**
- * @property string $path
- * @property string $url
- * @property ContentType content_type
- * @property ContentGenerator content_generator
- * @property Assets assets
- * @property Render render
- */
 class Plugin {
 
 	const DOMAIN = "dynamic-content";
@@ -48,6 +39,12 @@ class Plugin {
 	 * @var array $contents cache
 	 */
 	private $contents;
+    public $path;
+    public $url;
+    public ContentType $content_type;
+    public ContentGenerator $content_generator;
+    public Assets $assets;
+    public Render $render;
 
 	/**
 	 * Plugin constructor.

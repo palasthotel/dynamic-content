@@ -3,15 +3,10 @@
 
 namespace DynamicContent;
 
-/**
- * @property Plugin plugin
- */
 class _Component {
-	/**
-	 * _Component constructor.
-	 *
-	 * @param Plugin $plugin
-	 */
+
+    public Plugin $plugin;
+
 	public function __construct($plugin) {
 		$this->plugin = $plugin;
 		$this->onCreate();
